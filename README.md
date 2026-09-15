@@ -115,6 +115,6 @@ The implementation is intentionally split so it doubles as a porting template:
 - The nominal palm-up hand pose and in-palm cube spawn are now authored into the task-specific scene/model files, so opening the XML directly in MuJoCo shows the intended setup.
 - The task logic lives in [`src/orca_sim/task_envs.py`](src/orca_sim/task_envs.py), including reset-time cube randomization and optional hand-pose overrides for custom MJCF layouts.
 
-## Documentation
+## Additional documentation
 
-Additional documentation for users new to Gymnasium are available in [docs/README.md](docs/README.md):
+More documentation for users who are new to Gymnasium is available in [docs/README.md](docs/README.md):

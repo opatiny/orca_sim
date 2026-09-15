@@ -32,9 +32,9 @@ This will open the MuJoCo renderer for a very short time, because the simulation
 
 > On macOS, interactive MuJoCo rendering is usually launched with `mjpython`.
 
-## Cube reorientation example
+## Cube orientation example
 
-An example script is provided in [examples/cube.py](../examples/cube.py). This script simulates random movements of each joints and show you how the hand interacts with a cube. The simulation runs until you close the MuJoCo viewer. What is more, you can define the simulation speed. By default, it is real-time.
+An example script is provided in [examples/cube.py](../examples/cube.py). This script simulates random movements of each joint and shows you how the hand interacts with a cube. The simulation runs until you close the MuJoCo viewer. What is more, you can define the simulation speed. By default, it is real-time.
 
 The objective is to rotate the cube so thatß the red face points up. The reward logic is described in [./cube-reward.md](./cube-reward.md).
 

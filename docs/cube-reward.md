@@ -1,6 +1,6 @@
 # The cube task: reward, success and termination
 
-How `OrcaHandRightCubeOrientation` scores what the hand is doing.
+In this file, you will find more information about the `OrcaHandRightCubeOrientation` reward function.
 
 All values below were measured on `version="v2"`
 
@@ -17,21 +17,12 @@ makes this much easier than matching a full target orientation.
 
 ## Success condition
 
-Three steps, all in `task_envs.py`.
+They are three main steps to compute the reward for a given cube pose.
 
-**1. Where is the red face pointing?** Rotate the cube's local +Z axis into world
-coordinates:
+**1. Compute cube coordinates in world frame** Rotate the cube's local +Z axis into world
+coordinates
 
-```python
-def _cube_red_face_world_normal(self):
-    w, x, y, z = self._normalize_quat(self._cube_quat())
-    return np.array([2*(x*z + y*w), 2*(y*z - x*w), 1 - 2*(x*x + y*y)])
-```
-
-That is the third column of the rotation matrix built from the cube's quaternion.
-It matches MuJoCo's own `data.xmat[cube_body].reshape(3, 3)[:, 2]` to 1e-6.
-
-**2. How well does that line up with "up"?** A dot product with world up
+**2. Extract z coordinate** A dot product with world up
 `[0, 0, 1]`, which just extracts the z-component:
 
 ```python
@@ -44,7 +35,7 @@ alignment = np.dot(normal, WORLD_UP)      # in [-1, 1]
 | `0.0`     | red face horizontal                              |
 | `-1.0`    | red face straight down (this is the start state) |
 
-**3. Threshold it:**
+**3. Set success threshold**: define an angle tolerance
 
 ```python
 def _goal_reached(self):
@@ -53,7 +44,9 @@ def _goal_reached(self):
 
 `success_tolerance_rad` defaults to 15°, so the bar is `cos(15°) = 0.9659`.
 
-## The reward formula
+## Reward computation
+
+The following function is used to compute the final reward:
 
 ```python
 def _get_reward(self) -> float:
@@ -62,8 +55,6 @@ def _get_reward(self) -> float:
     drop_penalty = 1.0 if self._cube_dropped() else 0.0
     return float(alignment_reward + 0.10 * lift_bonus - drop_penalty)
 ```
-
-Three terms:
 
 ### Alignment — range [0, 1]
 
@@ -88,7 +79,7 @@ The `0.10` weight caps it at a tenth of what alignment is worth — hence "small
 
 `-1.0` the moment the cube body falls below z = 0.05.
 
-## Current rewards function makes perfect alignment suboptimal
+## Caution: current reward function makes perfect alignment suboptimal
 
 Reaching the goal sets `terminated = True`, which stops the episode. Stopping the
 episode stops the per-step income.
@@ -111,7 +102,7 @@ env = OrcaHandRightCubeOrientation(
     drop_height=0.05,                          # below this height, cube counts as dropped
     max_episode_steps=200,                     # max number of simulation steps per episode
     initial_red_face="down",                   # can also be: "up", "random"
-    cube_pos_xy_jitter=0.01,                   # randomize wear the cube appears, range in meters
+    cube_pos_xy_jitter=0.01,                   # randomize where the cube appears, in meters
 )
 ```
 
