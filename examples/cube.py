@@ -1,4 +1,4 @@
-"""In-hand cube reorientation, with a viewer that stays open.
+"""In-hand cube reorientation, with a viewer that stays open and a simulation in real time.
 Goal: rotate cube so red face point up.
 
 On MacOS, run with:  mjpython cube.py        (mjpython is required for the viewer on macOS)
@@ -19,7 +19,10 @@ POSE_REFRESH = 40  # how many steps to keep the same target pose for
 # -------------------------------------------------------------------------
 
 env = OrcaHandRightCubeOrientation(
-    version="v2", render_mode="human", max_episode_steps=200
+    version="v2",  # version of the hand
+    render_mode="human",  # render the environment to the screen in MuJoCo viewer
+    max_episode_steps=200,  # maximum number of steps per episode
+    frame_skip=5,  # number of simulation steps to run before each action
 )
 
 # default timestep is 2ms and frame_skip is 5
@@ -50,12 +53,14 @@ while viewer is None or viewer.is_running():  # keep running until the viewer is
 
     # Placeholder policy: chase a random target slowly, so the motion stays
     if stepCount % POSE_REFRESH == 0:  # new pose every N steps
+        # draw random value in rad for each of the 17 joints (defines a new pose to reach)
         target = env.action_space.sample()
     action += SMOOTHING * (target - action)
     obs, reward, terminated, truncated, info = env.step(
         np.clip(action, env.action_low, env.action_high)
     )
 
+    # terminated: goal reached or cube dropped, truncated: max steps reached
     if terminated or truncated:
         episode += 1
         print(

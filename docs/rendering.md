@@ -6,39 +6,8 @@ This document describes how to render the simulation and how to control the disp
 
 The environment class defines the following rendering modes:
 
-```python
-metadata = {"render_modes": ["human", "rgb_array"], "render_fps": 30}
-```
-
-The main modes are:
-
 - `"human"`: opens an interactive MuJoCo viewer for visualization;
 - `"rgb_array"`: renders offscreen and returns a NumPy array of pixels.
-
-## Displaying the simulation in mujoco viewer
-
-```python
-from orca_sim import OrcaHandRight
-
-env = OrcaHandRight(render_mode="human")
-obs, info = env.reset(seed=0)
-
-for _ in range(1000): # number of steps
-    action = env.action_space.sample()
-    obs, reward, terminated, truncated, info = env.step(action)
-
-env.close()
-```
-
-With this script, the viewer will close after the 1000 steps are computed.
-
-## macOS note: use `mjpython`
-
-On macOS, interactive MuJoCo rendering may fail when launched from a plain Python process. The environment raises a clear error in that case and recommends using `mjpython`.
-
-```bash
-mjpython my_script.py
-```
 
 ## Keeping the viewer open
 

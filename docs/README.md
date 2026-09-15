@@ -1,11 +1,46 @@
-# ORCA Sim documentation
+# Additional documentation for newcomers
 
-This directory collects short technical notes for people who are new to Gymnasium and MuJoCO. It also shows you how to render the simulation so you can see what is happening, instead of it just running in the background.
+This directory collects technical notes for people who are new to Gymnasium and MuJoCO. It also shows you how to render the simulation so you can see what is happening, instead of it just running in the background.
 
-## Start here
+## Generalities
 
-- [Getting started](./getting-started.md) — installation, first environment, and basic usage.
-- [Rendering the simulation](./rendering.md) — interactive and offscreen rendering, and how to change simulation speed.
-- [Gymnasium and MuJoCo](./gymnasium-mujoco.md) — tips and tricks about MuJoCo and Gymnasium.
+This project provides a simulation interface for the ORCA hand in the Gymnasium API, which in turn uses MuJoCo as a physical engine and for rendering. The hand classes inherit from the `gymnasium.Env` class. Most method of these classes are therefore directly coming from Gymnasium, and you should check their documentation for more information about each function.
+
+- [Gymnasium documentation](https://gymnasium.farama.org/)
+- [MuJoCo documentation](https://mujoco.readthedocs.io/en/stable/overview.html)
+
+## Rendered simulation
+
+To display an interactive viewer, use `render_mode="human"`. This will make a MuJoCo window appear, which allows you to visualise the hand movements.
+
+```python
+from orca_sim import OrcaHandRight
+
+env = OrcaHandRight(render_mode="human")
+obs, info = env.reset(seed=0)
+
+for _ in range(200): # number of steps
+    action = env.action_space.sample()
+    obs, reward, terminated, truncated, info = env.step(action)
+    if terminated or truncated:
+        obs, info = env.reset()
+
+env.close()
+```
+
+This will open the MuJoCo renderer for a very short time, because the simulation only has 200 steps. Increase number of steps to have longer simulation. More tips on rendering can be found in [rendering.md](./rendering.md).
+
+> On macOS, interactive MuJoCo rendering is usually launched with `mjpython`.
+
+## Cube reorientation example
+
+An example script is provided in [examples/cube.py](../examples/cube.py). This script simulates random movements of each joints and show you how the hand interacts with a cube. The simulation runs until you close the MuJoCo viewer. What is more, you can define the simulation speed. By default, it is real-time.
+
+The objective is to rotate the cube so thatß the red face points up. The reward logic is described in [./cube-reward.md](./cube-reward.md).
+
+## See also
+
+- [rendering.md](./rendering.md)
+- [cube-reward.md](./cube-reward.md)
 
 > Note: this documentation was assisted by GitHub Copilot, version MAI-Code-1.1-Flash.

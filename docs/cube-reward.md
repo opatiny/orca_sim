@@ -2,7 +2,7 @@
 
 How `OrcaHandRightCubeOrientation` scores what the hand is doing.
 
-All numbers below were measured on `version="v2"`
+All values below were measured on `version="v2"`
 
 ## The task
 
