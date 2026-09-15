@@ -73,21 +73,16 @@ partial progress counts.
 
 ### Lift bonus — range [0, 0.1]
 
-A linear ramp on the cube's height, rewarding _keeping the cube up in the fingers_
-rather than letting it sag into the palm or dribble toward being dropped:
+A linear ramp on the cube's height, rewarding _keeping the cube up in the fingers_.
 
-| cube z       | `lift_bonus` | contributes |
-| ------------ | ------------ | ----------- |
-| ≤ 0.12       | 0.000        | +0.000      |
-| 0.15         | 0.250        | +0.025      |
-| 0.19 (start) | 0.583        | +0.058      |
-| ≥ 0.24       | 1.000        | +0.100      |
+| cube height (in m) | `lift_bonus` | contributes |
+| ------------------ | ------------ | ----------- |
+| ≤ 0.12             | 0.000        | +0.000      |
+| 0.15               | 0.250        | +0.025      |
+| 0.19 (start)       | 0.583        | +0.058      |
+| ≥ 0.24             | 1.000        | +0.100      |
 
 The `0.10` weight caps it at a tenth of what alignment is worth — hence "small".
-Two wrinkles: the ramp bottoms out at z = 0.12 while `drop_height` is 0.05, so
-there is a **dead zone** between them where the cube is slipping but the score says
-nothing; and the ceiling at 0.24 is never reached in practice (the cube starts at
-0.19 and was measured between 0.143 and 0.190), so it acts as a plain linear term.
 
 ### Drop penalty — 0 or -1
 
@@ -98,26 +93,26 @@ nothing; and the ceiling at 0.24 is never reached in practice (the cube starts a
 Reaching the goal sets `terminated = True`, which stops the episode. Stopping the
 episode stops the per-step income.
 
-| strategy                 | outcome                                           | return    |
-| ------------------------ | ------------------------------------------------- | --------- |
-| flip properly at step 50 | success → episode ends at step 50                 | **≈ 27**  |
-| hover just short of 15°  | never triggers → runs all 200 steps at ~1.04 each | **≈ 208** |
+| strategy                   | outcome                                           | return    |
+| -------------------------- | ------------------------------------------------- | --------- |
+| orient properly at step 50 | success → episode ends at step 50                 | **≈ 27**  |
+| hover just short of 15°    | never triggers → runs all 200 steps at ~1.04 each | **≈ 208** |
 
 Per-step reward is 1.058 at perfect alignment and 1.038 just below the threshold —
 almost identical. But finishing forfeits the remaining ~150 steps of income, so
 **deliberately not finishing scores about 8× better.**
 
-## Some environment options
-
-All on the constructor:
+## Useful environment options
 
 ```python
 env = OrcaHandRightCubeOrientation(
     version="v2",
-    success_tolerance_rad=np.deg2rad(15.0),   # how close counts as success
-    drop_height=0.05,                          # below this z, cube counts as dropped
-    max_episode_steps=200,                     # 200 steps = 2 s of simulated time
-    initial_red_face="down",                   # or "up", "random"
-    cube_pos_xy_jitter=0.0,                    # start-position randomization
+    success_tolerance_rad=np.deg2rad(15.0),    # angle tolerance to consider orientation of the cube successful
+    drop_height=0.05,                          # below this height, cube counts as dropped
+    max_episode_steps=200,                     # max number of simulation steps per episode
+    initial_red_face="down",                   # can also be: "up", "random"
+    cube_pos_xy_jitter=0.01,                   # randomize wear the cube appears, range in meters
 )
 ```
+
+> Note: this documentation was written with the help of Claude Code, model Claude Opus 5.

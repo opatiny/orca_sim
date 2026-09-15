@@ -117,8 +117,4 @@ The implementation is intentionally split so it doubles as a porting template:
 
 ## Documentation
 
-Additional technical notes for new users are available in [docs/README.md](docs/README.md):
-
-- [docs/getting-started.md](docs/getting-started.md) — installation, first environment, and basic usage.
-- [docs/gymnasium-mujoco.md](docs/gymnasium-mujoco.md) — how Gymnasium and MuJoCo are used in this project.
-- [docs/rendering.md](docs/rendering.md) — how to render the simulation and how the viewer lifecycle works.
+Additional documentation for users new to Gymnasium are available in [docs/README.md](docs/README.md):

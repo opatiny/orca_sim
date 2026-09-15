@@ -24,15 +24,8 @@ while env._viewer is not None and env._viewer.is_running():
 env.close()
 ```
 
-With `env._viewer.is_running()`, the viewer with the simulaiton will run until the user closes it.
+With `env._viewer.is_running()`, the viewer with the simulation will run until the user closes the MuJoCo viewer.
 
-This tip is used in [../examples/cube.py](../examples/cube.py).
+For a more complete example, check [../examples/cube.py](../examples/cube.py).
 
-## See also
-
-- [getting-started.md](./getting-started.md)
-- [cube-reward.md](./cube-reward.md)
-- [README.md](../README.md)
-
-> Note: this documentation was assisted by GitHub Copilot, version MAI-Code-1.1-Flash.
-> ß
+> Note: this documentation was written with the help of Claude Code, model Claude Opus 5.

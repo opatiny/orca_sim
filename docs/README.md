@@ -9,7 +9,7 @@ This project provides a simulation interface for the ORCA hand in the Gymnasium 
 - [Gymnasium documentation](https://gymnasium.farama.org/)
 - [MuJoCo documentation](https://mujoco.readthedocs.io/en/stable/overview.html)
 
-## Rendered simulation
+## Render simulation
 
 To display an interactive viewer, use `render_mode="human"`. This will make a MuJoCo window appear, which allows you to visualise the hand movements.
 
@@ -40,7 +40,7 @@ The objective is to rotate the cube so thatß the red face points up. The reward
 
 ## See also
 
-- [rendering.md](./rendering.md)
-- [cube-reward.md](./cube-reward.md)
+- For more information on mujoco rendering: [rendering.md](./rendering.md)
+- Explanations about the reward function of the `OrcaHandRightCubeOrientation` environment: [cube-reward.md](./cube-reward.md)
 
-> Note: this documentation was assisted by GitHub Copilot, version MAI-Code-1.1-Flash.
+> Note: this documentation was written with the help of Claude Code, model Claude Opus 5.
