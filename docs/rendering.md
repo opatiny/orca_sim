@@ -66,7 +66,7 @@ This is the appropriate way to launch an interactive viewer on macOS, because Mu
 
 The passive viewer is non-blocking. It returns immediately and then expects later calls to `sync()`. A script that resets and terminates immediately may show the viewer for only a brief instant before the process exits.
 
-A common pattern is to keep stepping until the window is closed:
+A common pattern is to keep stepping until the window is closed by the user:
 
 ```python
 env = OrcaHandRight(render_mode="human")
@@ -79,19 +79,28 @@ while env._viewer is not None and env._viewer.is_running():
 env.close()
 ```
 
-The viewer object is created implicitly when the environment first renders. The call to `env.render()` is therefore a necessary part of the display lifecycle.
-
 ## Simulation frequency and control rate
 
-The environment uses the MuJoCo step loop and a frame skip value:
+### 2. `frame_skip` — defines observation rate
+
+The number of **physics substeps run per `env.step()`**. It decouples the rate your
+policy acts at from the rate MuJoCo integrates at:
 
 ```python
+self.data.ctrl[:] = np.clip(action, self.action_low, self.action_high)
 mujoco.mj_step(self.model, self.data, nstep=self.frame_skip)
 ```
 
-The `frame_skip` parameter decouples the simulation step rate from the control step rate. In the repository default configuration, the model timestep is fixed and the environment executes several physics substeps per call to `step()`.
+With the defaults (`timestep = 0.002`, `frame_skip = 5`):
 
-This design is useful because it allows a policy to act at a lower frequency while the simulator integrates at a higher frequency internally.
+|                       | rate   | interval |
+| --------------------- | ------ | -------- |
+| physics integration   | 500 Hz | 2 ms     |
+| control / observation | 100 Hz | 10 ms    |
+
+One `env.step()` runs the simulator forward five times **holding your action
+constant** across all five (a zero-order hold). The state is observed only after
+the last substep.
 
 ## See also
 

@@ -18,9 +18,10 @@ The essential methods are:
 - `reset()`: initialize the simulator state and return an observation and metadata;
 - `step(action)`: apply an action, integrate the physics, and return observation, reward, termination, truncation, and information;
 - `render()`: open a viewer or return an image array depending on `render_mode`.
+  --- render automatically called in step?
 
 The action space is a bounded continuous box corresponding to the MuJoCo actuator limits:
---- what is bounded continuous box -Y rephrase, specify dimensions
+--- what is bounded continuous box -Y rephrase, specify dimensions of variables and units
 
 ```python
 self.action_space = spaces.Box(
