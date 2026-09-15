@@ -6,7 +6,6 @@ On MacOS, run with:  mjpython cube.py        (mjpython is required for the viewe
 
 import time
 
-from matplotlib.pyplot import step
 import numpy as np
 
 from orca_sim import OrcaHandRightCubeOrientation
