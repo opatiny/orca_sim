@@ -2,7 +2,6 @@
   <img src="https://huggingface.co/datasets/fracapuano/blogs/resolve/main/orca_sim.png" alt="orca_sim header" width="600"/>
 </p>
 
-
 `orca_sim` provides simulation environments for the ORCA hand.
 You can start building your ORCA hand today at [orcahand.com](https://www.orcahand.com/).
 
@@ -18,11 +17,13 @@ uv pip install orca_sim
 ```
 
 Alternatively, you can use `conda` ([how to install conda](https://www.anaconda.com/docs/getting-started/miniconda/install)):
+
 ```bash
 conda create -n orca python=3.11 -y
 conda activate orca
 python -m pip install orca_sim
 ```
+
 As we are continuously iterating on `orca_sim`, you can fetch the latest `main` building this package from source, so to be in the loop with the latest developments.
 
 ```bash
@@ -30,8 +31,8 @@ git clone https://github.com/orcahand/orca_sim
 cd orca_sim && uv pip install -e .
 ```
 
-> [!WARNING] 
-We are still iterating (a lot!) on this package. If you need stability, consider sticking to the Pypi package (`pip install orca_sim`).
+> [!WARNING]
+> We are still iterating (a lot!) on this package. If you need stability, consider sticking to the Pypi package (`pip install orca_sim`).
 
 ## Getting started
 
@@ -46,6 +47,7 @@ obs, info = env.reset()
 obs, reward, terminated, truncated, info = env.step(env.action_space.sample())
 env.close()
 ```
+
 The 'extended' version of different hands contain additional bodies (incl. inertial properties) such as the camera mount, the U2D2 board and fans.
 
 ### Hands versioning
@@ -113,3 +115,10 @@ The implementation is intentionally split so it doubles as a porting template:
 - The nominal palm-up hand pose and in-palm cube spawn are now authored into the task-specific scene/model files, so opening the XML directly in MuJoCo shows the intended setup.
 - The task logic lives in [`src/orca_sim/task_envs.py`](src/orca_sim/task_envs.py), including reset-time cube randomization and optional hand-pose overrides for custom MJCF layouts.
 
+## Documentation
+
+Additional technical notes for new users are available in [docs/README.md](docs/README.md):
+
+- [docs/getting-started.md](docs/getting-started.md) — installation, first environment, and basic usage.
+- [docs/gymnasium-mujoco.md](docs/gymnasium-mujoco.md) — how Gymnasium and MuJoCo are used in this project.
+- [docs/rendering.md](docs/rendering.md) — how to render the simulation and how the viewer lifecycle works.
